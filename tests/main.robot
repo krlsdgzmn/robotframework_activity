@@ -1,5 +1,4 @@
 *** Settings ***
-Resource     ../resources/App.resource
 Resource     ../resources/User.resource
 
 
