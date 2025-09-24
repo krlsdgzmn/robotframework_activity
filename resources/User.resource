@@ -23,3 +23,26 @@ Create User
     Click Element   ${x_save_button}
 
     Wait Until Element Is Visible           ${x_delete_button}
+
+
+Create Five Users
+    @{users}            Get Random Users
+    FOR     ${user}     IN      @{users}[:5]
+        Navigate Link   ${x_customers_link}
+        Create User     ${user}
+        Verify User     ${user}
+    END
+
+
+Verify User
+    [Arguments]         ${user}
+    Navigate Link       ${x_customers_link}
+
+    Wait Until Element Is Visible           ${x_refresh_button}   
+    Click Button        ${x_refresh_button}
+
+    Wait Until Element Is Visible           ${x_row}   
+    ${retrieved_text}   Get Text            ${x_row}
+    ${last_name}        Evaluate            "${retrieved_text}".replace("\\n", "").split(" ")[1]
+    Log To Console      Original:${user["last_name"]}
+    Log To Console      Retrieved:${last_name}
