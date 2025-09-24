@@ -9,4 +9,9 @@ class UsersLibrary:
         response = requests.get(
             "https://jsonplaceholder.typicode.com/users", verify=False
         )
-        return response.json()
+        users = response.json()
+        for user in users:
+            user["first_name"] = user["name"].split(" ")[0]
+            user["last_name"] = user["name"].split(" ")[1]
+
+        return users
