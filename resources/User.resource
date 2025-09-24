@@ -1,5 +1,6 @@
 *** Settings ***
-Resource     ../resources/App.resource
+Library     ../library/UsersLibrary.py
+Resource    ../resources/App.resource
 Variables   ../variables/users_variable.py
 
 
@@ -11,3 +12,20 @@ Login Action
     Input Password  ${x_password_input}     ${password}
     Click Button    ${x_login_button}
 
+
+Navigate Customers
+    Wait Until Element Is Visible           ${x_customers_link}
+    Click Element   ${x_customers_link}
+
+
+Create User
+    [Arguments]     ${user}
+    Wait Until Element Is Visible           ${x_create_customer_link}
+    Click Element   ${x_create_customer_link}
+
+    Input Text      ${x_first_name_input}   ${user["first_name"]}
+    Input Text      ${x_last_name_input}    ${user["last_name"]}
+    Input Text      ${x_email_input}        ${user["email"]}
+    Click Element   ${x_save_button}
+
+    Wait Until Element Is Visible           ${x_delete_button}
