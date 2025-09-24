@@ -10,3 +10,9 @@ Launch Browser
     Call Method    ${options}           add_experimental_option     prefs                   ${prefs}
     Call Method    ${options}           add_argument                --start-maximized
     Open Browser   ${url}               chrome                      options=${options}
+
+
+Navigate Link
+    [Arguments]     ${link}
+    Wait Until Element Is Visible       ${link}
+    Click Element   ${link}
