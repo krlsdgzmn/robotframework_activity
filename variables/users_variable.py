@@ -24,3 +24,11 @@ x_delete_button = '//button[@aria-label="Delete"]'
 x_row = '(//div[@class="MuiTypography-root MuiTypography-body2 css-dpq5ky"])[1]'
 x_i_row = '(//div[@class="MuiTypography-root MuiTypography-body2 css-dpq5ky"])'
 x_refresh_button = '//button[@aria-label="Refresh"]'
+
+x_name = "/td[2]"
+x_last_seen = "/td[3]"
+x_orders = "/td[4]"
+x_total_spent = "/td[5]"
+x_latest_purchase = "/td[6]"
+x_news = '(//span[@class="MuiTypography-root MuiTypography-body2 css-17ot3m1"]/*)'
+x_segments = "/td[8]"

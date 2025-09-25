@@ -62,16 +62,16 @@ Verify User Details
     Navigate Action     ${x_row}
 
     Wait Until Element Is Visible          ${x_first_name_input}
-    ${first_name}=          Get Value      ${x_first_name_input}            
-    ${last_name}=           Get Value      ${x_last_name_input}             
-    ${email}=               Get Value      ${x_email_input}                 
-    ${birthday}=            Get Value      ${x_birthday_input}              
-    ${address}=             Get Value      ${x_address_input}               
-    ${city}=                Get Value      ${x_city_input}                  
-    ${state}=               Get Value      ${x_stateAbbr_input}             
-    ${zipcode}=             Get Value      ${x_zipcode_input}               
-    ${password}=            Get Value      ${x_password_input}              
-    ${confirm_password}=    Get Value      ${x_confirm_password_input}      
+    ${first_name}=          Get Value      ${x_first_name_input}
+    ${last_name}=           Get Value      ${x_last_name_input}
+    ${email}=               Get Value      ${x_email_input}
+    ${birthday}=            Get Value      ${x_birthday_input}
+    ${address}=             Get Value      ${x_address_input}
+    ${city}=                Get Value      ${x_city_input}
+    ${state}=               Get Value      ${x_stateAbbr_input}
+    ${zipcode}=             Get Value      ${x_zipcode_input}
+    ${password}=            Get Value      ${x_password_input}
+    ${confirm_password}=    Get Value      ${x_confirm_password_input}
 
     Should Be Equal As Strings    ${first_name}        ${user["first_name"]}
     Should Be Equal As Strings    ${last_name}         ${user["last_name"]}
@@ -87,14 +87,14 @@ Verify User Details
 
 Update Rows 6-10
     [Arguments]         @{users}
-    FOR    ${i}    IN RANGE     5
-        Navigate Action     ${x_customers_link}
-        Navigate Action     ${x_refresh_button}
+    FOR    ${i}    IN RANGE    5
+        Navigate Action        ${x_customers_link}
+        Navigate Action        ${x_refresh_button}
 
-        ${index}=               Evaluate        ${i} + 6
-        ${user}=                Set Variable    ${users}[${i}]
-        ${current_xpath}=       Set Variable    ${x_i_row}\[${index}\]
-        Navigate Action         ${current_xpath}
+        ${index}=              Evaluate                      ${i} + 6
+        ${user}=               Set Variable                  ${users}[${i}]
+        ${current_xpath}=      Set Variable                  ${x_i_row}\[${index}\]
+        Navigate Action        ${current_xpath}
 
         Clear And Input Text   ${x_first_name_input}         ${user["first_name"]}
         Clear And Input Text   ${x_last_name_input}          ${user["last_name"]}
@@ -107,5 +107,31 @@ Update Rows 6-10
         Clear And Input Text   ${x_password_input}           ${user["password"]}
         Clear And Input Text   ${x_confirm_password_input}   ${user["password"]}
 
-        Navigate Action         ${x_save_button}
+        Navigate Action        ${x_save_button}
+    END
+
+
+Log Table Data
+    Navigate Action        ${x_customers_link}
+    Navigate Action        ${x_refresh_button}
+
+    FOR     ${i}    IN RANGE       25
+        ${index}=               Evaluate                        ${i}+1
+        ${text_name}=           Get Text                        //tr\[${index}\]${x_name}
+        ${name}=                Evaluate                        """${text_name}""".split("\\n")[-1]
+        ${last_seen}=           Get Text                        //tr\[${index}\]${x_last_seen}
+        ${orders}=              Get Text                        //tr\[${index}\]${x_orders}
+        ${total_spent}=         Get Text                        //tr\[${index}\]${x_total_spent}
+        ${latest_purchase}=     Get Text                        //tr\[${index}\]${x_latest_purchase}
+        ${news}=                Get Element Attribute           ${x_news}\[${index}\]       aria-label
+        ${segments}=            Get Text                        //tr\[${index}\]${x_segments}
+
+        Log To Console      ========== User ${index} ==========
+        Log To Console      Name: ${name}
+        Log To Console      Last seen: ${last_seen}
+        Log To Console      Orders: ${orders}
+        Log To Console      Total spent: ${total_spent}
+        Log To Console      Latest purchase: ${latest_purchase}
+        Log To Console      News: ${news}
+        Log To Console      Segments: ${segments}\n
     END
