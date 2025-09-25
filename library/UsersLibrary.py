@@ -13,8 +13,11 @@ class UsersLibrary:
         day = random.randint(1, 28)
         return f"{month:02d}-{day:02d}-{year}"
 
+    def _format_birthday(self, birthday):
+        return f"{birthday[-4:]}-{birthday[:2]}-{birthday[3:5]}"
+
     def _generate_state(self, address):
-        return address["street"][0]+address["suite"][0]+address["city"][0]
+        return address["street"][0] + address["suite"][0] + address["city"][0]
 
     def get_random_users(self):
         response = requests.get(
@@ -25,7 +28,8 @@ class UsersLibrary:
             user["first_name"] = user["name"].split(" ")[0]
             user["last_name"] = " ".join(user["name"].split(" ")[1:])
             user["birthday"] = self._generate_birthday()
+            user["iso_birthday"] = self._format_birthday(user["birthday"])
             user["address"]["state"] = self._generate_state(user["address"])
-            user["password"] = user["last_name"]+user["birthday"]
+            user["password"] = user["last_name"] + user["birthday"]
 
         return users
