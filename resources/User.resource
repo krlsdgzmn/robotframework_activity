@@ -61,7 +61,7 @@ Verify User Details
     # Verify all details
     Navigate Action     ${x_row}
 
-    Wait Until Element Is Visible                      ${x_first_name_input}
+    Wait Until Element Is Visible          ${x_first_name_input}
     ${first_name}=          Get Value      ${x_first_name_input}            
     ${last_name}=           Get Value      ${x_last_name_input}             
     ${email}=               Get Value      ${x_email_input}                 
