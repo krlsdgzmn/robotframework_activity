@@ -138,7 +138,7 @@ Log Table Data
         ${news}=                Set Variable If         '${news}'==''                 NA    ${news}
 
         ${segments}=            Get Text                //tr\[${index}\]${x_segments}
-        ${formatted_segments}=  Evaluate                ", ".join("""${segments}""".split())
+        ${formatted_segments}=  Evaluate                ", ".join("""${segments}""".split("\\n"))
         ${formatted_segments}=  Set Variable If         '${formatted_segments}'==''   NA    ${formatted_segments}
 
         Log To Console      \n========== User ${index} ==========
