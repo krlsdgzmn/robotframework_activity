@@ -53,8 +53,8 @@ Verify User Details
     Navigate Action     ${x_refresh_button}
 
     # Verify the table row user's name
-    ${row_text}=                    Get Text        ${x_row}
-    ${name}=                        Evaluate        """${row_text}""".split("\\n")[-1]
+    ${row_text}=        Get Text        ${x_row}
+    ${name}=            Evaluate        """${row_text}""".split("\\n")[-1]
 
     Should Be Equal As Strings      ${name}         ${user["name"]}
 
@@ -116,22 +116,37 @@ Log Table Data
     Navigate Action        ${x_refresh_button}
 
     FOR     ${i}    IN RANGE       25
-        ${index}=               Evaluate                        ${i}+1
-        ${text_name}=           Get Text                        //tr\[${index}\]${x_name}
-        ${name}=                Evaluate                        """${text_name}""".split("\\n")[-1]
-        ${last_seen}=           Get Text                        //tr\[${index}\]${x_last_seen}
-        ${orders}=              Get Text                        //tr\[${index}\]${x_orders}
-        ${total_spent}=         Get Text                        //tr\[${index}\]${x_total_spent}
-        ${latest_purchase}=     Get Text                        //tr\[${index}\]${x_latest_purchase}
-        ${news}=                Get Element Attribute           ${x_news}\[${index}\]       aria-label
-        ${segments}=            Get Text                        //tr\[${index}\]${x_segments}
+        ${index}=               Evaluate                ${i}+1
 
-        Log To Console      ========== User ${index} ==========
+        ${text_name}=           Get Text                //tr\[${index}\]${x_name}
+        ${name}=                Evaluate                """${text_name}""".split("\\n")[-1]
+        ${name}=                Set Variable If         '${name}'==''    NA    ${name}
+
+        ${last_seen}=           Get Text                //tr\[${index}\]${x_last_seen}
+        ${last_seen}=           Set Variable If         '${last_seen}'==''    NA    ${last_seen}
+
+        ${orders}=              Get Text                //tr\[${index}\]${x_orders}
+        ${orders}=              Set Variable If         '${orders}'==''    NA    ${orders}
+
+        ${total_spent}=         Get Text                //tr\[${index}\]${x_total_spent}
+        ${total_spent}=         Set Variable If         '${total_spent}'==''    NA    ${total_spent}
+
+        ${latest_purchase}=     Get Text                //tr\[${index}\]${x_latest_purchase}
+        ${latest_purchase}=     Set Variable If         '${latest_purchase}'==''    NA    ${latest_purchase}
+
+        ${news}=                Get Element Attribute   ${x_news}\[${index}\]       aria-label
+        ${news}=                Set Variable If         '${news}'==''    NA    ${news}
+
+        ${segments}=            Get Text                //tr\[${index}\]${x_segments}
+        ${formatted_segments}=  Evaluate                ", ".join("""${segments}""".split())
+        ${formatted_segments}=  Set Variable If         '${formatted_segments}'==''    NA    ${formatted_segments}
+
+        Log To Console      \n========== User ${index} ==========
         Log To Console      Name: ${name}
         Log To Console      Last seen: ${last_seen}
         Log To Console      Orders: ${orders}
         Log To Console      Total spent: ${total_spent}
         Log To Console      Latest purchase: ${latest_purchase}
         Log To Console      News: ${news}
-        Log To Console      Segments: ${segments}\n
+        Log To Console      Segments: ${formatted_segments}
     END
