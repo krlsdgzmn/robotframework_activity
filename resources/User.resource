@@ -193,5 +193,5 @@ Validate Total Spending
     IF  ${sum} > 3500
         Log To Console  \n\nPASS: Total spending ($${formatted_sum}) meets the minimum threshold ($3,500)\n\n
     ELSE
-        Fatal Error     \n\nFAIL: Total spending ($${formatted_sum}) is below the minimum threshold ($3,500)\n\n
+        Fail            \n\nFAIL: Total spending ($${formatted_sum}) is below the minimum threshold ($3,500)\n\n
     END
