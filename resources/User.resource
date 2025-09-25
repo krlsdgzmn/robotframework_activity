@@ -17,32 +17,39 @@ Create User
     [Arguments]     ${user}
     Navigate Link   ${x_create_customer_link}
 
-    Input Text      ${x_first_name_input}   ${user["first_name"]}
-    Input Text      ${x_last_name_input}    ${user["last_name"]}
-    Input Text      ${x_email_input}        ${user["email"]}
-    Click Element   ${x_save_button}
+    Wait Until Element Is Visible                    ${x_first_name_input}
+    Input Text      ${x_first_name_input}            ${user["first_name"]}
+    Input Text      ${x_last_name_input}             ${user["last_name"]}
+    Input Text      ${x_email_input}                 ${user["email"]}
+    Input Text      ${x_birthday_input}              ${user["birthday"]}
+    Input Text      ${x_address_input}               ${user["address"]["street"]} ${user["address"]["suite"]}
+    Input Text      ${x_city_input}                  ${user["address"]["city"]}
+    Input Text      ${x_stateAbbr_input}             ${user["address"]["state"]}
+    Input Text      ${x_zipcode_input}               ${user["address"]["zipcode"]}
+    Input Text      ${x_password_input}              ${user["password"]}
+    Input Text      ${x_confirm_password_input}      ${user["password"]}
 
-    Wait Until Element Is Visible           ${x_delete_button}
+    Click Element   ${x_save_button}
+    Wait Until Element Is Visible                    ${x_delete_button}
 
 
 Create Five Users
-    @{users}            Get Random Users
-    FOR     ${user}     IN      @{users}[:5]
-        Navigate Link   ${x_customers_link}
-        Create User     ${user}
-        Verify User     ${user}
+    [Arguments]     @{users}
+    FOR     ${user}     IN           @{users}[:5]
+        Navigate Link                ${x_customers_link}
+        Create User                  ${user}
+        Verify User From Dashboard   ${user}
     END
 
 
-Verify User
+Verify User From Dashboard
     [Arguments]         ${user}
     Navigate Link       ${x_customers_link}
 
-    Wait Until Element Is Visible           ${x_refresh_button}   
-    Click Button        ${x_refresh_button}
+    Wait Until Element Is Visible               ${x_refresh_button}
+    Click Button                                ${x_refresh_button}
 
-    Wait Until Element Is Visible           ${x_row}   
-    ${retrieved_text}   Get Text            ${x_row}
-    ${last_name}        Evaluate            "${retrieved_text}".replace("\\n", "").split(" ")[1]
-    Log To Console      Original:${user["last_name"]}
-    Log To Console      Retrieved:${last_name}
+    Wait Until Element Is Visible               ${x_row}
+    ${retrieved_text}             Get Text      ${x_row}
+    ${name}                       Evaluate      """${retrieved_text}""".split("\\n")[-1]
+    Should Be Equal As Strings    ${name}       ${user["name"]}
