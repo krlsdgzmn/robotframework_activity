@@ -10,11 +10,11 @@ TEST-000001
 
     Launch Browser                 url=${URL}
     Login Action                   username=${USERNAME}    password=${PASSWORD}
-    Create And Verify Five Users   @{users}
+    Create And Verify Users        @{users[:5]}
 
 
 # Task 3
 TEST-000002
     [Documentation]     Update the user details from row 6-10
 
-    Update Rows 6-10    @{users}
+    Update Rows 6-10    @{users[5:]}
