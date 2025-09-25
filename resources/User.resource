@@ -14,8 +14,8 @@ Login Action
 
 
 Create User
-    [Arguments]     ${user}
-    Navigate Link   ${x_create_customer_link}
+    [Arguments]                                      ${user}
+    Navigate Action                                  ${x_create_customer_link}
 
     Wait Until Element Is Visible                    ${x_first_name_input}
     Input Text      ${x_first_name_input}            ${user["first_name"]}
@@ -29,27 +29,44 @@ Create User
     Input Text      ${x_password_input}              ${user["password"]}
     Input Text      ${x_confirm_password_input}      ${user["password"]}
 
-    Click Element   ${x_save_button}
+    Navigate Action                                  ${x_save_button}
     Wait Until Element Is Visible                    ${x_delete_button}
 
 
-Create Five Users
+Create And Verify Five Users
     [Arguments]     @{users}
     FOR     ${user}     IN           @{users}[:5]
-        Navigate Link                ${x_customers_link}
+        Navigate Action              ${x_customers_link}
         Create User                  ${user}
-        Verify User From Dashboard   ${user}
+        Verify User Details          ${user}
     END
 
 
-Verify User From Dashboard
+Verify User Details
     [Arguments]         ${user}
-    Navigate Link       ${x_customers_link}
+    Navigate Action     ${x_customers_link}
+    Navigate Action     ${x_refresh_button}
+    Navigate Action     ${x_row}
 
-    Wait Until Element Is Visible               ${x_refresh_button}
-    Click Button                                ${x_refresh_button}
+    Wait Until Element Is Visible                      ${x_first_name_input}
+    ${first_name}           Get Element Attribute      ${x_first_name_input}            value
+    ${last_name}            Get Element Attribute      ${x_last_name_input}             value
+    ${email}                Get Element Attribute      ${x_email_input}                 value
+    ${birthday}             Get Element Attribute      ${x_birthday_input}              value
+    ${address}              Get Element Attribute      ${x_address_input}               value
+    ${city}                 Get Element Attribute      ${x_city_input}                  value
+    ${state}                Get Element Attribute      ${x_stateAbbr_input}             value
+    ${zipcode}              Get Element Attribute      ${x_zipcode_input}               value
+    ${password}             Get Element Attribute      ${x_password_input}              value
+    ${confirm_password}     Get Element Attribute      ${x_confirm_password_input}      value
 
-    Wait Until Element Is Visible               ${x_row}
-    ${retrieved_text}             Get Text      ${x_row}
-    ${name}                       Evaluate      """${retrieved_text}""".split("\\n")[-1]
-    Should Be Equal As Strings    ${name}       ${user["name"]}
+    Should Be Equal As Strings    ${first_name}        ${user["first_name"]}
+    Should Be Equal As Strings    ${last_name}         ${user["last_name"]}
+    Should Be Equal As Strings    ${email}             ${user["email"]}
+    Should Be Equal As Strings    ${birthday}          ${user["iso_birthday"]}
+    Should Be Equal As Strings    ${address}           ${user["address"]["street"]} ${user["address"]["suite"]}
+    Should Be Equal As Strings    ${city}              ${user["address"]["city"]}
+    Should Be Equal As Strings    ${state}             ${user["address"]["state"]}
+    Should Be Equal As Strings    ${zip_code}          ${user["address"]["zipcode"]}
+    Should Be Equal As Strings    ${password}          ${user["password"]}
+    Should Be Equal As Strings    ${confirm_password}  ${user["password"]}

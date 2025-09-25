@@ -9,7 +9,6 @@ TEST-000001
     Launch Browser      url=${URL}
     Login Action        username=${USERNAME}    password=${PASSWORD}
 
-    @{users}            Get Random Users
-    Create Five Users   @{users}
-
-    Sleep               3s
+    @{users}                                    Get Random Users
+    Create And Verify Five Users                @{users}
+    Sleep                                       3s
