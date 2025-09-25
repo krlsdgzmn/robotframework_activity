@@ -6,13 +6,12 @@ Library     SeleniumLibrary
 Launch Browser
     [Arguments]    ${url}
     ${options}     Evaluate             sys.modules['selenium.webdriver'].ChromeOptions()   sys
-    ${prefs}       Create Dictionary    credentials_enable_service=${False}                 profile.password_manager_enabled=${False}
-    Call Method    ${options}           add_experimental_option     prefs                   ${prefs}
     Call Method    ${options}           add_argument                --start-maximized
+    Call Method    ${options}           add_argument                --incognito
     Open Browser   ${url}               chrome                      options=${options}
 
 
-Navigate Link
-    [Arguments]     ${link}
-    Wait Until Element Is Visible       ${link}
-    Click Element   ${link}
+Navigate Action
+    [Arguments]     ${action}
+    Wait Until Element Is Visible       ${action}
+    Click Element   ${action}
