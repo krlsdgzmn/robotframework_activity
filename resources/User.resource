@@ -83,3 +83,29 @@ Verify User Details
     Should Be Equal As Strings    ${zip_code}          ${user["address"]["zipcode"]}
     Should Be Equal As Strings    ${password}          ${user["password"]}
     Should Be Equal As Strings    ${confirm_password}  ${user["password"]}
+
+
+Update Rows 6-10
+    [Arguments]         @{users}
+    FOR    ${i}    IN RANGE     5
+        Navigate Action     ${x_customers_link}
+        Navigate Action     ${x_refresh_button}
+
+        ${index}=               Evaluate        ${i} + 6
+        ${user}=                Set Variable    ${users}[${i}]
+        ${current_xpath}=       Set Variable    ${x_i_row}\[${index}\]
+        Navigate Action         ${current_xpath}
+
+        Clear And Input Text   ${x_first_name_input}         ${user["first_name"]}
+        Clear And Input Text   ${x_last_name_input}          ${user["last_name"]}
+        Clear And Input Text   ${x_email_input}              ${user["email"]}
+        Input Text             ${x_birthday_input}           ${user["birthday"]}
+        Clear And Input Text   ${x_address_input}            ${user["address"]["street"]} ${user["address"]["suite"]}
+        Clear And Input Text   ${x_city_input}               ${user["address"]["city"]}
+        Clear And Input Text   ${x_stateAbbr_input}          ${user["address"]["state"]}
+        Clear And Input Text   ${x_zipcode_input}            ${user["address"]["zipcode"]}
+        Clear And Input Text   ${x_password_input}           ${user["password"]}
+        Clear And Input Text   ${x_confirm_password_input}   ${user["password"]}
+
+        Navigate Action         ${x_save_button}
+    END

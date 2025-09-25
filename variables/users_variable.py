@@ -22,4 +22,5 @@ x_save_button = '//button[@aria-label="Save"]'
 x_delete_button = '//button[@aria-label="Delete"]'
 
 x_row = '(//div[@class="MuiTypography-root MuiTypography-body2 css-dpq5ky"])[1]'
+x_i_row = '(//div[@class="MuiTypography-root MuiTypography-body2 css-dpq5ky"])'
 x_refresh_button = '//button[@aria-label="Refresh"]'
