@@ -10,6 +10,7 @@ TEST-000001
 
     Launch Browser                 url=${URL}
     Login Action                   username=${USERNAME}    password=${PASSWORD}
+
     Create And Verify Users        @{users[:5]}
 
 
@@ -25,3 +26,11 @@ TEST-000003
     [Documentation]     Print all the data in the table 
 
     Log Table Data
+
+
+# Task 5
+TEST-000004
+    [Documentation]     Display user's spending and, calculate and validate total spending 
+
+    ${sum}=                     Set Variable            0
+    Display User Spending       ${sum}

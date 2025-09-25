@@ -117,27 +117,27 @@ Log Table Data
     FOR     ${i}    IN RANGE    25
         Navigate Action         ${x_refresh_button}
         ${index}=               Evaluate                ${i}+1
+        ${row}=                 Set Variable            //tr\[${index}\]
 
-        ${text_name}=           Get Text                //tr\[${index}\]${x_name}
+        ${text_name}=           Get Text                ${row}${x_name}
         ${name}=                Evaluate                """${text_name}""".split("\\n")[-1]
-        ${name}=                Set Variable If         '${name}'==''                 NA    ${name}
 
-        ${last_seen}=           Get Text                //tr\[${index}\]${x_last_seen}
+        ${last_seen}=           Get Text                ${row}${x_last_seen}
         ${last_seen}=           Set Variable If         '${last_seen}'==''            NA    ${last_seen}
 
-        ${orders}=              Get Text                //tr\[${index}\]${x_orders}
+        ${orders}=              Get Text                ${row}${x_orders}
         ${orders}=              Set Variable If         '${orders}'==''               NA    ${orders}
 
-        ${total_spent}=         Get Text                //tr\[${index}\]${x_total_spent}
+        ${total_spent}=         Get Text                ${row}${x_total_spent}
         ${total_spent}=         Set Variable If         '${total_spent}'==''          NA    ${total_spent}
 
-        ${latest_purchase}=     Get Text                //tr\[${index}\]${x_latest_purchase}
+        ${latest_purchase}=     Get Text                ${row}${x_latest_purchase}
         ${latest_purchase}=     Set Variable If         '${latest_purchase}'==''      NA    ${latest_purchase}
 
         ${news}=                Get Element Attribute   ${x_news}\[${index}\]         aria-label
         ${news}=                Set Variable If         '${news}'==''                 NA    ${news}
 
-        ${segments}=            Get Text                //tr\[${index}\]${x_segments}
+        ${segments}=            Get Text                ${row}${x_segments}
         ${formatted_segments}=  Evaluate                ", ".join("""${segments}""".split("\\n"))
         ${formatted_segments}=  Set Variable If         '${formatted_segments}'==''   NA    ${formatted_segments}
 
@@ -149,4 +149,49 @@ Log Table Data
         Log To Console      Latest purchase: ${latest_purchase}
         Log To Console      News: ${news}
         Log To Console      Segments: ${formatted_segments}
+
+    END
+
+
+Display User Spending
+    [Arguments]         ${sum}
+    Navigate Action             ${x_customers_link}
+
+    ${counter}=                 Set Variable            0
+    Log To Console              \n
+    FOR     ${i}    IN RANGE    25
+        Navigate Action         ${x_refresh_button}
+        ${index}=               Evaluate                ${i}+1
+        ${row}=                 Set Variable            //tr\[${index}\]
+
+        ${text_name}=           Get Text                ${row}${x_name}
+        ${name}=                Evaluate                """${text_name}""".split("\\n")[-1]
+
+        ${user_total_spent}=    Get Text                ${row}${x_total_spent}
+        ${user_total_spent}=    Evaluate                """${user_total_spent}""".replace(",", "")[1:]
+        ${user_total_spent}=    Set Variable If         '${user_total_spent}'==''  0    ${user_total_spent}
+
+
+        IF  ${user_total_spent} > 0
+            ${counter}=         Evaluate          ${counter}+1
+            ${sum}=             Evaluate          ${sum}+${user_total_spent}
+            Log To Console      ${counter}. ${name}: ${user_total_spent}
+        END
+    END
+
+    ${formatted_sum}            Evaluate           f"{${sum}:,.2f}"
+    Log To Console              \n================================
+    Log To Console              Total Customers Spending: $${formatted_sum}
+    Log To Console              ================================\n
+    Validate Total Spending     ${sum}
+
+
+Validate Total Spending
+    [Arguments]         ${sum}
+
+    ${formatted_sum}    Evaluate    f"{${sum}:,.2f}"
+    IF  ${sum} > 3500
+        Log To Console  \n\nPASS: Total spending ($${formatted_sum}) meets the minimum threshold ($3,500)\n\n
+    ELSE
+        Fatal Error     \n\nFAIL: Total spending ($${formatted_sum}) is below the minimum threshold ($3,500)\n\n
     END
