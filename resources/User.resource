@@ -51,6 +51,14 @@ Verify User Details
     [Arguments]         ${user}
     Navigate Action     ${x_customers_link}
     Navigate Action     ${x_refresh_button}
+
+    # Verify the table row user's name
+    ${row_text}=                    Get Text        ${x_row}
+    ${name}=                        Evaluate        """${row_text}""".split("\\n")[-1]
+
+    Should Be Equal As Strings      ${name}         ${user["name"]}
+
+    # Verify all details
     Navigate Action     ${x_row}
 
     Wait Until Element Is Visible                      ${x_first_name_input}

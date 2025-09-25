@@ -10,8 +10,3 @@ TEST-000001
     Launch Browser                 url=${URL}
     Login Action                   username=${USERNAME}    password=${PASSWORD}
     Create And Verify Five Users   @{users}
-
-
-TEST-000002
-    [Documentation]     Verify the table row details of the first 5 added users
-    Sleep               3s
