@@ -5,6 +5,11 @@ Variables   ../variables/users_variable.py
 
 
 *** Keywords ***
+Setup Users
+    @{users}=                               Get Random Users
+    Set Suite Variable                      @{users}   
+
+
 Login Action
     [Arguments]     ${username}             ${password}
     Wait Until Element Is Visible           ${x_username_input}
@@ -49,16 +54,16 @@ Verify User Details
     Navigate Action     ${x_row}
 
     Wait Until Element Is Visible                      ${x_first_name_input}
-    ${first_name}           Get Element Attribute      ${x_first_name_input}            value
-    ${last_name}            Get Element Attribute      ${x_last_name_input}             value
-    ${email}                Get Element Attribute      ${x_email_input}                 value
-    ${birthday}             Get Element Attribute      ${x_birthday_input}              value
-    ${address}              Get Element Attribute      ${x_address_input}               value
-    ${city}                 Get Element Attribute      ${x_city_input}                  value
-    ${state}                Get Element Attribute      ${x_stateAbbr_input}             value
-    ${zipcode}              Get Element Attribute      ${x_zipcode_input}               value
-    ${password}             Get Element Attribute      ${x_password_input}              value
-    ${confirm_password}     Get Element Attribute      ${x_confirm_password_input}      value
+    ${first_name}=          Get Element Attribute      ${x_first_name_input}            value
+    ${last_name}=           Get Element Attribute      ${x_last_name_input}             value
+    ${email}=               Get Element Attribute      ${x_email_input}                 value
+    ${birthday}=            Get Element Attribute      ${x_birthday_input}              value
+    ${address}=             Get Element Attribute      ${x_address_input}               value
+    ${city}=                Get Element Attribute      ${x_city_input}                  value
+    ${state}=               Get Element Attribute      ${x_stateAbbr_input}             value
+    ${zipcode}=             Get Element Attribute      ${x_zipcode_input}               value
+    ${password}=            Get Element Attribute      ${x_password_input}              value
+    ${confirm_password}=    Get Element Attribute      ${x_confirm_password_input}      value
 
     Should Be Equal As Strings    ${first_name}        ${user["first_name"]}
     Should Be Equal As Strings    ${last_name}         ${user["last_name"]}
