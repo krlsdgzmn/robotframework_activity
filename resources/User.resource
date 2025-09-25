@@ -113,9 +113,9 @@ Update Rows 6-10
 
 Log Table Data
     Navigate Action        ${x_customers_link}
-    Navigate Action        ${x_refresh_button}
 
     FOR     ${i}    IN RANGE       25
+        Navigate Action        ${x_refresh_button}
         ${index}=               Evaluate                ${i}+1
 
         ${text_name}=           Get Text                //tr\[${index}\]${x_name}
