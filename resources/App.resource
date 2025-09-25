@@ -15,3 +15,10 @@ Navigate Action
     [Arguments]     ${action}
     Wait Until Element Is Visible       ${action}
     Click Element   ${action}
+
+
+Clear And Input Text
+    [Arguments]     ${locator}          ${text}
+    Wait Until Element Is Visible       ${locator}
+    Press Keys      ${locator}          CTRL+a      BACKSPACE
+    Input Text      ${locator}          ${text}
