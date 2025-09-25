@@ -112,10 +112,10 @@ Update Rows 6-10
 
 
 Log Table Data
-    Navigate Action        ${x_customers_link}
+    Navigate Action             ${x_customers_link}
 
-    FOR     ${i}    IN RANGE       25
-        Navigate Action        ${x_refresh_button}
+    FOR     ${i}    IN RANGE    25
+        Navigate Action         ${x_refresh_button}
         ${index}=               Evaluate                ${i}+1
 
         ${text_name}=           Get Text                //tr\[${index}\]${x_name}
@@ -134,7 +134,7 @@ Log Table Data
         ${latest_purchase}=     Get Text                //tr\[${index}\]${x_latest_purchase}
         ${latest_purchase}=     Set Variable If         '${latest_purchase}'==''      NA    ${latest_purchase}
 
-        ${news}=                Get Element Attribute   ${x_news}\[${index}\]       aria-label
+        ${news}=                Get Element Attribute   ${x_news}\[${index}\]         aria-label
         ${news}=                Set Variable If         '${news}'==''                 NA    ${news}
 
         ${segments}=            Get Text                //tr\[${index}\]${x_segments}
